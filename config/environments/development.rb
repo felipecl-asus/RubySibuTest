@@ -1,4 +1,4 @@
-require "active_support/core_ext/integer/time"
+require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -19,13 +19,13 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
-  if Rails.root.join("tmp/caching-dev.txt").exist?
+  if Rails.root.join('tmp/caching-dev.txt').exist?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
-      "Cache-Control" => "public, max-age=#{2.days.to_i}"
+      'Cache-Control' => "public, max-age=#{2.days.to_i}"
     }
   else
     config.action_controller.perform_caching = false
@@ -73,4 +73,25 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Set the delivery method for Action Mailer to SMTP
+  config.action_mailer.delivery_method = :smtp
+
+  # Configure the SMTP settings
+  config.action_mailer.smtp_settings = {
+    # SMTP server address
+    address: ENV.fetch('SMTP_ADDRESS'),
+    # SMTP server port
+    port: ENV.fetch('SMTP_PORT'),
+    # Domain used in HELO command
+    domain: ENV.fetch('SMTP_DOMAIN'),
+    # SMTP server authentication username
+    user_name: ENV.fetch('SMTP_USERNAME'),
+    # SMTP server authentication password
+    password: ENV.fetch('SMTP_PASSWORD'),
+    # SMTP server authentication method
+    authentication: ENV.fetch('SMTP_AUTHENTICATION'),
+    # Enable STARTTLS for secure communication
+    enable_starttls_auto: ENV.fetch('SMTP_ENABLE_STARTTLS_AUTO') == 'true'
+  }
 end
